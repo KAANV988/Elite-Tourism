@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+<!-- The title is dynamic -->
+{% block title %}{{ city.name }} - Details{% endblock %}
+
+{% block content %}
+
+    <!-- 
+      This is the dynamic header, using the city's
+      main 'image_filename' as the background.
+    -->
+    <section class="relative h-[60vh] flex items-center justify-center text-center">
+        <img 
+            src="{{ url_for('static', filename='images/' + city.image_filename) }}" 
+            alt="{{ city.name }}"
+            class="absolute inset-0 w-full h-full object-cover"
+            onerror="this.src='https://placehold.co/1920x600/333/f59e0b?text={{ city.name | urlencode }}'"
+        >
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black opacity-60"></div>
+
+        <!-- Content -->
+        <div class="z-10 px-6">
+            <h1 class="text-5xl md:text-7xl font-bold text-white">
+                {{ city.name }}
+            </h1>
+            <!-- This shows the 'short description' -->
+            <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mt-4">
+                {{ city.description }}
+            </p>
+        </div>
+    </section>
+
+    <!-- 
+      THIS IS THE MAIN CONTENT SECTION
+    -->
+    <section class="py-24 bg-black">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="bg-gray-900 p-8 md:p-12 rounded-xl shadow-2xl">
+                
+                <!-- 
+                  This is the link back to the State page
+                  e.g., "Back to Gujarat"
+                -->
+                <a href="{{ url_for('state_detail', state_id=city.state_id) }}" class="text-accent-color hover:text-amber-400 mb-8 block">&larr; Back to {{ city.state.name }}</a>
+
+                <h2 class="text-4xl font-bold text-white mb-6">About {{ city.name }}</h2>
+
+                <!-- 
+                  THIS IS THE SOLUTION TO YOUR QUESTION!
+                  
+                  - 'city.details' is the text you wrote in the admin panel.
+                  - The '| safe' filter tells Jinja to render the HTML
+                    inside it (like your <img> tags) safely.
+                  
+                  - The 'prose' classes from Tailwind automatically
+                    style your text to look beautiful (like a blog post).
+                -->
+                <div class="prose prose-lg prose-invert max-w-none text-gray-300">
+                    {{ city.details | safe }}
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

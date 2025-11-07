@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Tourism - Discover India's Treasures</title>
+    <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #1a2a6c;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #b21f1f;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .search-input {
+            width: 400px;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px 0 0 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .search-btn {
+            padding: 15px 25px;
+            background: #1a2a6c;
+            color: white;
+            border: none;
+            border-radius: 0 50px 50px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-btn:hover {
+            background: #fdbb2d;
+            color: #1a2a6c;
+        }
+
+        .hero {
+            background: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+            height: 500px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            padding: 20px;
+        }
+
+        .hero-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .loading {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 40px 0;
+        }
+
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fdbb2d;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+
+        .results {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .destination-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .destination-header h2 {
+            font-size: 2.5rem;
+            color: #1a2a6c;
+            margin-bottom: 10px;
+        }
+
+        .destination-header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .info-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #b21f1f;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #fdbb2d;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            color: #1a2a6c;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .search-input {
+                width: 70%;
+            }
+            
+            .hero {
+                height: 300px;
+            }
+            
+            .hero-content h2 {
+                font-size: 2rem;
+            }
+            
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Elite Tourism</div>
+            <div class="tagline">Discover the Incredible Diversity of India</div>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Enter a city, state or country name...">
+                <button class="search-btn"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </header>
+
+        <div class="hero">
+            <div class="hero-content">
+                <h2>Experience the Beauty of India</h2>
+                <p>From the majestic Himalayas in the north to the serene backwaters in the south, India offers a diverse range of experiences for every traveler.</p>
+            </div>
+        </div>
+
+        <div class="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">Discovering the treasures of your destination...</div>
+        </div>
+
+        <div class="results">
+            <!-- Results will be displayed here -->
+        </div>
+    </div>
+
+    <footer>
+        <p>Elite Tourism &copy; 2023 | Final Year Project | Discover India's Rich Heritage</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBtn = document.querySelector('.search-btn');
+            const searchInput = document.querySelector('.search-input');
+            const loading = document.querySelector('.loading');
+            const results = document.querySelector('.results');
+            
+            // India travel data
+            const indiaData = {
+                'india': {
+                    name: 'India',
+                    description: 'India, officially the Republic of India, is a country in South Asia. It is the seventh-largest country by area, the second-most populous country, and the most populous democracy in the world.',
+                    places: [
+                        { name: 'Taj Mahal', description: 'An ivory-white marble mausoleum in Agra, built by Mughal emperor Shah Jahan in memory of his wife Mumtaz Mahal.' },
+                        { name: 'Varanasi', description: 'A spiritual city on the banks of the Ganges River, considered one of the oldest continuously inhabited cities in the world.' },
+                        { name: 'Goa Beaches', description: 'Famous for its pristine beaches, Portuguese heritage, and vibrant nightlife.' }
+                    ],
+                    foods: [
+                        { name: 'Biryani', description: 'A fragrant rice dish cooked with spices and meat, popular across the country.' },
+                        { name: 'Butter Chicken', description: 'A classic North Indian dish featuring tender chicken in a creamy tomato-based sauce.' },
+                        { name: 'Masala Dosa', description: 'A crispy South Indian crepe filled with spiced potatoes, served with chutney and sambar.' }
+                    ],
+                    languages: [
+                        { name: 'Hindi', description: 'The most widely spoken language, official language of the Indian government.' },
+                        { name: 'English', description: 'Widely used for business and administrative purposes.' },
+                        { name: 'Regional Languages', description: 'India has 22 officially recognized languages including Bengali, Telugu, Marathi, Tamil, and more.' }
+                    ]
+                },
+                'kerala': {
+                    name: 'Kerala',
+                    description: 'Kerala, located on India\'s tropical Malabar Coast, is known for its serene backwaters, beautiful beaches, and lush greenery.',
+                    places: [
+                        { name: 'Backwaters of Alleppey', description: 'A network of interconnected canals, rivers, and lakes, best experienced on a houseboat.' },
+                        { name: 'Munnar', description: 'A picturesque hill station famous for its tea plantations and cool climate.' },
+                        { name: 'Kovalam Beach', description: 'A beautiful beach with lighthouse and surfing opportunities.' }
+                    ],
+                    foods: [
+                        { name: 'Appam with Stew', description: 'Soft rice hoppers served with vegetable or meat stew.' },
+                        { name: 'Karimeen Pollichathu', description: 'Pearl spot fish marinated with spices, wrapped in banana leaf and grilled.' },
+                        { name: 'Puttu and Kadala', description: 'Steamed rice cakes served with black chickpea curry.' }
+                    ],
+                    languages: [
+                        { name: 'Malayalam', description: 'The official language of Kerala, spoken by the majority of the population.' },
+                        { name: 'English', description: 'Widely understood in tourist areas and urban centers.' }
+                    ]
+                },
+                'rajasthan': {
+                    name: 'Rajasthan',
+                    description: 'Rajasthan, meaning "Land of Kings", is known for its historical forts, palaces, and vibrant culture.',
+                    places: [
+                        { name: 'Udaipur', description: 'The "City of Lakes", known for its beautiful palaces and romantic ambiance.' },
+                        { name: 'Jaipur', description: 'The "Pink City", famous for its stunning architecture and vibrant markets.' },
+                        { name: 'Jaisalmer', description: 'The "Golden City", known for its sandstone architecture and desert safari.' }
+                    ],
+                    foods: [
+                        { name: 'Dal Baati Churma', description: 'A traditional dish consisting of lentils, wheat rolls, and sweet crushed cereal.' },
+                        { name: 'Laal Maas', description: 'A spicy mutton curry made with red chili peppers.' },
+                        { name: 'Gatte ki Sabzi', description: 'Gram flour dumplings in spicy yogurt-based gravy.' }
+                    ],
+                    languages: [
+                        { name: 'Rajasthani', description: 'A group of Indo-Aryan languages and dialects spoken in Rajasthan.' },
+                        { name: 'Hindi', description: 'Widely spoken and understood throughout the state.' }
+                    ]
+                },
+                'goa': {
+                    name: 'Goa',
+                    description: 'Goa is India\'s smallest state known for its beautiful beaches, Portuguese heritage, and vibrant nightlife.',
+                    places: [
+                        { name: 'Calangute Beach', description: 'Known as the "Queen of Beaches", it\'s one of the most popular beaches in North Goa.' },
+                        { name: 'Basilica of Bom Jesus', description: 'A UNESCO World Heritage Site housing the mortal remains of St. Francis Xavier.' },
+                        { name: 'Dudhsagar Falls', description: 'A stunning four-tiered waterfall on the Mandovi River.' }
+                    ],
+                    foods: [
+                        { name: 'Fish Curry Rice', description: 'Goan staple food - fish in spicy coconut curry served with rice.' },
+                        { name: 'Bebinca', description: 'A traditional Goan layered dessert.' },
+                        { name: 'Pork Vindaloo', description: 'A spicy dish of Portuguese origin made with pork, vinegar, and chili.' }
+                    ],
+                    languages: [
+                        { name: 'Konkani', description: 'The official language of Goa.' },
+                        { name: 'Portuguese', description: 'Spoken by a small minority, influence seen in place names and architecture.' }
+                    ]
+                }
+            };
+
+            // Search function
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            function performSearch() {
+                const query = searchInput.value.trim().toLowerCase();
+                
+                if (query === '') {
+                    alert('Please enter a destination name');
+                    return;
+                }
+
+                // Show loading animation
+                loading.style.display = 'flex';
+                results.style.display = 'none';
+
+                // Simulate loading delay
+                setTimeout(function() {
+                    if (indiaData[query]) {
+                        displayResults(indiaData[query]);
+                    } else {
+                        loading.style.display = 'none';
+                        alert('Destination not found in our database. Please try searching for "India", "Kerala", "Rajasthan", or "Goa".');
+                    }
+                }, 2000);
+            }
+
+            function displayResults(destination) {
+                loading.style.display = 'none';
+                
+                results.innerHTML = `
+                    <div class="destination-header">
+                        <h2>${destination.name}</h2>
+                        <p>${destination.description}</p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3 class="section-title">Famous Places</h3>
+                        <div class="card-container">
+                            ${destination.places.map(place => `
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="${place.name}">
+                                    </div>
+                                    <div class="card-content">
+                                        <h4 class="card-title">${place.name}</h4>
+                                        <p class="card-desc">${place.description}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3 class="section-title">Famous Foods</h3>
+                        <div class="card-container">
+                            ${destination.foods.map(food => `
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="${food.name}">
+                                    </div>
+                                    <div class="card-content">
+                                        <h4 class="card-title">${food.name}</h4>
+                                        <p class="card-desc">${food.description}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3 class="section-title">Languages</h3>
+                        <div class="card-container">
+                            ${destination.languages.map(lang => `
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="${lang.name}">
+                                    </div>
+                                    <div class="card-content">
+                                        <h4 class="card-title">${lang.name}</h4>
+                                        <p class="card-desc">${lang.description}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                results.style.display = 'block';
+                
+                // Smooth scroll to results
+                results.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>

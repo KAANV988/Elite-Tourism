@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ state.name }} - Cities{% endblock %}
+
+{% block content %}
+
+    <!-- 
+      This is a dynamic header. 
+      'state.image_filename' and 'state.name' come from app.py.
+    -->
+    <section class="relative h-[50vh] flex items-center justify-center text-center">
+        <img 
+            src="{{ url_for('static', filename='images/' + state.image_filename) }}" 
+            alt="{{ state.name }}"
+            class="absolute inset-0 w-full h-full object-cover"
+        >
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black opacity-60"></div>
+
+        <!-- Content -->
+        <div class="z-10 px-6">
+            <h1 class="text-5xl md:text-7xl font-bold text-white">
+                {{ state.name }}
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mt-4">
+                {{ state.description }}
+            </p>
+        </div>
+    </section>
+
+    <!-- Cities Grid Section -->
+    <section id="cities" class="py-24 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-4">Cities in {{ state.name }}</h2>
+            <p class="text-lg text-gray-400 text-center mb-16 max-w-2xl mx-auto">Discover the amazing places to visit.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- 
+                  This is the magic!
+                  We loop through 'state.cities'. This works because
+                  of the 'relationship' we built in the database.
+                -->
+                {% for city in state.cities %}
+                <div class="bg-gray-800 rounded-xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-amber-500/20 transform hover:-translate-y-2">
+                    <img 
+                        src="{{ url_for('static', filename='images/' + city.image_filename) }}" 
+                        alt="{{ city.name }}" 
+                        class="w-full h-64 object-cover"
+                        onerror="this.src='https://placehold.co/600x400/333/f59e0b?text={{ city.name | urlencode }}'"
+                    >
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-white">{{ city.name }}</h3>
+                        <p class="text-gray-400 mb-4">{{ city.description }}</p>
+                        <!-- 
+                          This links to the final 'city_detail' page,
+                          passing the 'city.id'.
+                        -->
+                        <a href="{{ url_for('city_detail', city_id=city.id) }}" class="font-medium accent-color hover:text-amber-400 transition-colors duration-300">View Details &rarr;</a>
+                    </div>
+                </div>
+                {% else %}
+                <!-- This shows if the state has no cities added yet -->
+                <div class="col-span-1 md:col-span-2 lg:col-span-3 text-center text-gray-500">
+                    <p class="text-xl">No cities have been added for this state yet.</p>
+                    <p>The admin can add cities from the admin panel.</p>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

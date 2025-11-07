@@ -1,0 +1,179 @@
+{% extends "layout.html" %}
+
+{% block title %}Home - Elite Tourism{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <!-- Background Video -->
+        <video 
+            autoplay 
+            loop 
+            muted 
+            playsinline
+            class="absolute inset-0 w-full h-full object-cover -z-10"
+            poster="{{ url_for('static', filename='images/destination-gujarat.jpg') }}"
+        >
+            <source src="{{ url_for('static', filename='videos/hero-bg.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black opacity-60 -z-10"></div>
+
+        <!-- Hero Content -->
+        <div class="z-10 px-6 fade-in-up">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 tracking-tight">
+                <span class="text-white">Your Journey,</span>
+                <span class="block text-accent-color">Redefined.</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
+                Experience the pinnacle of luxury travel with Elite Tourism. We craft bespoke journeys that are as unique as you are.
+            </p>
+            <a href="#destinations" class="inline-block bg-accent-color text-gray-900 font-bold py-4 px-10 rounded-full text-lg shadow-lg hover:bg-amber-400 transition-all duration-300 animate-pulse-slow">
+                Explore Tours
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured States Section (Formerly Destinations) -->
+    <section id="destinations" class="py-24 bg-gray-900 fade-in-section">
+        <div class="container mx-auto px-6">
+            <!-- UPDATED: Title -->
+            <h2 class="text-4xl font-bold text-center mb-4">Our States</h2>
+            <p class="text-lg text-gray-400 text-center mb-16 max-w-2xl mx-auto">Handpicked locations for the discerning traveler. Unforgettable experiences await.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- 
+                  UPDATED:
+                  - The loop now says 'state in states'
+                -->
+                {% for state in states %}
+                <div class="bg-gray-800 rounded-xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-amber-500/20 transform hover:-translate-y-2">
+                    <img 
+                        src="{{ url_for('static', filename='images/' + state.image_filename) }}" 
+                        alt="{{ state.name }}" 
+                        class="w-full h-64 object-cover"
+                        onerror="this.src='https://placehold.co/600x400/333/f59e0b?text={{ state.name | urlencode }}'"
+                    >
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-white">{{ state.name }}</h3>
+                        <p class="text-gray-400 mb-4">{{ state.description }}</p>
+                        <!-- 
+                          UPDATED:
+                          - The link now goes to the 'state_detail' route,
+                            passing the 'state.id' to the URL.
+                        -->
+                        <a href="{{ url_for('state_detail', state_id=state.id) }}" class="font-medium accent-color hover:text-amber-400 transition-colors duration-300">Learn More &rarr;</a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-span-1 md:col-span-2 lg:col-span-3 text-center text-gray-500">
+                    <p class="text-xl">No states have been added yet.</p>
+                    <p>The admin can add new states from the admin panel.</p>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="about" class="py-24 bg-black fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- Content -->
+                <div>
+                    <span class="text-accent-color font-semibold uppercase">Why Elite Tourism</span>
+                    <h2 class="text-4xl font-bold text-white my-4">We Craft Your Perfect Getaway</h2>
+                    <p class="text-lg text-gray-400 mb-8">
+                        With over 20 years of experience, our team doesn't just book trips; we design experiences. From private jets to exclusive access, every detail is handled with precision and care, ensuring a seamless and unforgettable journey.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-accent-color mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            <span class="text-gray-300">Bespoke itineraries tailored to your desires.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-accent-color mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            <span class="text-gray-300">24/7 concierge and on-ground support.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-accent-color mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            <span class="text-gray-300">Access to exclusive, off-market experiences.</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 
+                  UPDATED:
+                  This 'img' tag has been replaced with a 'video' tag.
+                -->
+                <div class="rounded-xl overflow-hidden shadow-2xl">
+                    <video 
+                        autoplay 
+                        loop 
+                        muted 
+                        playsinline
+                        class="w-full h-full object-cover"
+                    >
+                        <!-- 
+                          IMPORTANT:
+                          You must add a video file to this path:
+                          static/videos/about-video.mp4
+                        -->
+                        <source src="{{ url_for('static', filename='videos/about-video.mp4') }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="py-24 bg-gray-900 fade-in-section">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-4xl font-bold text-center mb-4">Get in Touch</h2>
+            <p class="text-lg text-gray-400 text-center mb-16 max-w-2xl mx-auto">Have a question or a dream destination in mind? Let's make it happen.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Contact Info -->
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Email Us</h3>
+                        <a href="mailto:elitetourism2026@gmail.com" class="text-lg text-gray-400 hover:text-accent-color">elitetourism2026@gmail.com</a>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Call Us</h3>
+                        <a href="tel:+919948217336" class="text-lg text-gray-400 hover:text-accent-color">+91 9948217336</a>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-2">Our Office</h3>
+                        <p class="text-lg text-gray-400">123 Luxury Lane<br>Hyderabad, Telangana, 500001</p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div>
+                    <form action="#" method="POST" class="space-y-6">
+                        <div>
+                            <label for="contact-name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+                            <input type="text" id="contact-name" name="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent-color" required>
+                        </div>
+                        <div>
+                            <label for="contact-email" class="block text-sm font-medium text-gray-300 mb-2">Email</Mabel>
+                            <input type="email" id="contact-email" name="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent-color" required>
+                        </div>
+                        <div>
+                            <label for="contact-message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+                            <textarea id="contact-message" name="message" rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent-color" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-accent-color text-gray-900 font-bold py-3 px-6 rounded-full shadow-lg hover:bg-amber-400">
+                            Send Inquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

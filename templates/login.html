@@ -1,0 +1,49 @@
+<!-- 1. This also extends the "frame" -->
+{% extends "layout.html" %}
+
+<!-- 2. This sets the title for the page -->
+{% block title %}Login{% endblock %}
+
+<!-- 3. This is the content that goes inside the frame -->
+{% block content %}
+<div class="py-24 bg-black min-h-screen">
+    <div class="container mx-auto px-6 max-w-md">
+        <div class="bg-gray-900 p-8 rounded-xl shadow-2xl">
+            <h2 class="text-3xl font-bold text-center text-white mb-8">Login to Your Account</h2>
+            
+            <!-- 
+              This is the important part!
+              - method="POST" sends data (doesn't just visit a page).
+              - action="{{ url_for('login') }}" tells Python to send the
+                form data to your 'login' function in app.py.
+            -->
+            <form method="POST" action="{{ url_for('login') }}" class="space-y-6">
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                    <!-- 
+                      The 'name' attribute is how app.py finds this data.
+                      request.form.get('email')
+                    -->
+                    <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent-color focus:ring-1 focus:ring-accent-color" placeholder="your.email@example.com" required>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <!-- 
+                      request.form.get('password')
+                    -->
+                    <input type="password" id="password" name="password" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-accent-color focus:ring-1 focus:ring-accent-color" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="w-full bg-accent-color text-gray-900 font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:bg-amber-400 hover:shadow-amber-400/30 transform hover:-translate-y-0.5">
+                    Login
+                </button>
+            </form>
+            <p class="text-center text-gray-400 mt-6">
+                Don't have an account? 
+                <!-- This links to the 'register' function in app.py -->
+                <a href="{{ url_for('register') }}" class="font-medium accent-color hover:text-amber-400">Register here</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
